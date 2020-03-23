@@ -1,0 +1,4 @@
+name = My Custom Module
+description = My custom module and hooks
+package = Custom
+core = 7.x
