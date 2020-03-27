@@ -1,0 +1,7 @@
+mymodule.custom_page_controller:
+  path: '/custom_data'
+  defaults:
+    _controller: '\Drupal\mymodule\Controller\CustomPageController::customData'
+    _title: 'Custom Data'
+  requirements:
+    _permission: 'access content'
