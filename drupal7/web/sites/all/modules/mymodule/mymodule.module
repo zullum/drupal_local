@@ -1,1 +1,145 @@
 <?php
+
+/**
+ * Implements hook_services_resources().
+ */
+function mymodule_services_resources() {
+    return array(
+        'api' => array(
+            'retrieve' => array(
+                'help' => 'Retrieves a note',
+                'file' => array('type' => 'inc', 'module' => 'noteresource', 'name' => 'noteresource'),
+                'callback' => '_noteresource_retrieve',
+                'access callback' => '_noteresource_access',
+                'access arguments' => array('view'),
+                'access arguments append' => TRUE,
+                'args' => array(
+                array(
+                    'name' => 'id',
+                    'type' => 'int',
+                    'description' => 'The id of the note to get',
+                    'source' => array('path' => '0'),
+                    'optional' => FALSE,
+                ),
+                ),
+            ),
+            'create' => array(
+                'help' => 'Creates a note',
+                'file' => array('type' => 'inc', 'module' => 'noteresource', 'name' => 'noteresource'),
+                'callback' => '_noteresource_create',
+                'access arguments' => array('note resource create'),
+                'access arguments append' => FALSE,
+                'args' => array(
+                array(
+                    'name' => 'data',
+                    'type' => 'struct',
+                    'description' => 'The note object',
+                    'source' => 'data',
+                    'optional' => FALSE,
+                ),
+                ),
+            ),
+            'update' => array(
+                'help' => 'Updates a note',
+                'file' => array('type' => 'inc', 'module' => 'noteresource', 'name' => 'noteresource'),
+                'callback' => '_noteresource_update',
+                'access callback' => '_noteresource_access',
+                'access arguments' => array('update'),
+                'access arguments append' => TRUE,
+                'args' => array(
+                array(
+                    'name' => 'id',
+                    'type' => 'int',
+                    'description' => 'The id of the node to update',
+                    'source' => array('path' => '0'),
+                    'optional' => FALSE,
+                ),
+                array(
+                    'name' => 'data',
+                    'type' => 'struct',
+                    'description' => 'The note data object',
+                    'source' => 'data',
+                    'optional' => FALSE,
+                ),
+                ),
+            ),
+            'delete' => array(
+                'help' => 'Deletes a note',
+                'file' => array('type' => 'inc', 'module' => 'noteresource', 'name' => 'noteresource'),
+                'callback' => '_noteresource_delete',
+                'access callback' => '_noteresource_access',
+                'access arguments' => array('delete'),
+                'access arguments append' => TRUE,
+                'args' => array(
+                array(
+                    'name' => 'nid',
+                    'type' => 'int',
+                    'description' => 'The id of the note to delete',
+                    'source' => array('path' => '0'),
+                    'optional' => FALSE,
+                ),
+                ),
+            ),
+            'index' => array(
+                'help' => 'Retrieves a listing of notes',
+                'file' => array('type' => 'inc', 'module' => 'noteresource', 'name' => 'noteresource'),
+                'callback' => '_noteresource_index',
+                'access callback' => 'user_access',
+                'access arguments' => array('access content'),
+                'access arguments append' => FALSE,
+                'args' => array(array(
+                    'name' => 'page',
+                    'type' => 'int',
+                    'description' => '',
+                    'source' => array(
+                    'param' => 'page',
+                    ),
+                    'optional' => TRUE,
+                    'default value' => 0,
+                ),
+                array(
+                    'name' => 'parameters',
+                    'type' => 'array',
+                    'description' => '',
+                    'source' => 'param',
+                    'optional' => TRUE,
+                    'default value' => array(),
+                ),
+                ),
+            ),
+            // This is my custom action
+            'actions' => array(
+                'action_retrieve' => array(
+                  'callback' => 'mymodule_action_retrieve',
+                  'args' => array(
+                    array(
+                      'name' => 'title',
+                      'optional' => FALSE,
+                      'source' => 'data',
+                      'type' => 'string',
+                      'description' => 'Test argument 1.',
+                    ),
+                  ),
+                  'access callback' => 'user_access',
+                  'access arguments' => array('access content'),
+                  'access arguments append' => FALSE,
+                ),
+            ),
+        ),
+    );
+}
+
+function mymodule_action_retrieve($title){
+    return $title;
+}
+
+
+/**
+ * Implements hook_views_api().
+ */
+function mymodule_views_api() {
+    return array(
+      'api' => 3,
+      'path' => drupal_get_path('module', 'mymodule') . '/views',
+    );
+}

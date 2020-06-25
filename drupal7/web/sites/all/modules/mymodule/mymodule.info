@@ -2,3 +2,7 @@ name = My Custom Module
 description = My custom module and hooks
 package = Custom
 core = 7.x
+dependencies[] = services
+dependencies[] = ctools
+; Views Handlers
+files[] = views/mymodule_handler_handlername.inc
